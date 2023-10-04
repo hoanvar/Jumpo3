@@ -4,14 +4,13 @@ package Entity;
 
 import InPut.KeyBoardInPut;
 import Tool.Tool;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import java.awt.image.BufferedImage;
 
 import java.awt.Graphics;
+import java.io.File;
 import jumpo.Manager.GamePanel;
 
 public class Player extends Entity {
@@ -27,7 +26,7 @@ public class Player extends Entity {
         this.gamePanel = gamePanel;
         this.keyBoardInPut = keyBoardInPut;
         setDefaultValue();
-//        getPlayerImage();
+        getImage("/PlayerImage/");
         
     }   
    private void setDefaultValue(){
@@ -39,22 +38,20 @@ public class Player extends Entity {
        jumpSpeed = 3;
        isJumping = false;
    }
-   
-   private void getPlayerImage(){
+    private void getImage(String path){
        try{
-            left = ImageIO.read(getClass().getResourceAsStream("/PlayerImage/left.png"));
-            right = ImageIO.read(getClass().getResourceAsStream("/PlayerImage/right.png"));
+            left = ImageIO.read(getClass().getResourceAsStream(path + "left.png"));
+            right = ImageIO.read(getClass().getResourceAsStream(path + "right.png"));
         }catch(IOException e){
             e.printStackTrace();
         }
-       
-       left = scaleImg("left");
-       right = scaleImg("right");
+       left = scaleImg(path + "left");
+       right = scaleImg(path + "right");
        
    }
-   private BufferedImage scaleImg(String imageName){
+   private BufferedImage scaleImg(String path){
        BufferedImage image = null ;
-       String path = "/PlayerImage/" + imageName + ".png";
+       path = path + ".png";
        try{
             image = ImageIO.read(getClass().getResourceAsStream(path));
             image = Tool.scaleImage(image, gamePanel.tileSize, gamePanel.tileSize);
@@ -64,6 +61,7 @@ public class Player extends Entity {
        return image;
    }
    
+    @Override
    public void update(){
        if(isJumping == false){
            if(keyBoardInPut.getSpacePressed() == true){
@@ -115,9 +113,10 @@ public class Player extends Entity {
                 }
                 spriteCounter = 0;
             }
-        System.out.println(energy);
+//        System.out.println(energy);
    }
    
+    @Override
    public void draw(Graphics g2){
        BufferedImage image = null;
        switch(direction){
@@ -133,6 +132,9 @@ public class Player extends Entity {
                lastImage = right;
                break;
        }
+       if(image == null){
+           System.out.println("null");
+       }
             g2.drawImage(image, mapX, mapY,  null);
       
    }
@@ -140,4 +142,5 @@ public class Player extends Entity {
        int bns=1231221;
        return true;
    }
+
 }

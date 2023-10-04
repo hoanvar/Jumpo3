@@ -3,6 +3,8 @@ package jumpo.Manager;
 
 import Entity.Player;
 import InPut.KeyBoardInPut;
+import Tile.BackGround;
+import Tile.TileManager;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -34,6 +36,8 @@ public class GamePanel extends JPanel implements Runnable{
     
     KeyBoardInPut keyBoardInPut = new KeyBoardInPut();
     public Player player = new Player(this,keyBoardInPut);
+    BackGround backGround = new BackGround();
+    TileManager tileManager = new TileManager(this);
     Thread gameThread;   
     
     public GamePanel(){
@@ -89,6 +93,8 @@ public class GamePanel extends JPanel implements Runnable{
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
         
+        backGround.draw(g2);
+        tileManager.draw(g2);
         player.draw(g2);
         
         

@@ -1,7 +1,7 @@
 
 package Collision;
 
-import Entity.Entity;
+import javax.swing.text.html.parser.Entity;
 import jumpo.Manager.GamePanel;
 
 public class CollisionCheck {
