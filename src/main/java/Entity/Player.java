@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.io.File;
 import jumpo.Manager.GamePanel;
 
@@ -19,26 +20,36 @@ public class Player extends Entity {
     
     private int energy;
     private int jumpSpeed;
+    private int fallSpeed;
     private BufferedImage lastImage;
     private boolean isJumping;
+    private boolean isFalling;
+    private boolean hitTop;
+    private boolean hitSide;
     
     public Player (GamePanel gamePanel, KeyBoardInPut keyBoardInPut){
         this.gamePanel = gamePanel;
         this.keyBoardInPut = keyBoardInPut;
+        solidArea = new Rectangle(8, 16, 32, 32);
         setDefaultValue();
         getImage("/PlayerImage/");
         
     }   
    private void setDefaultValue(){
        mapX = 10 * gamePanel.tileSize;
-       mapY = 10 * gamePanel.tileSize;
+       mapY = 10 * gamePanel.tileSize - 60;
        direction = "right";
        energy = 0;
        entityWalkSpeed = 2;
        jumpSpeed = 3;
+       fallSpeed = 3;
        isJumping = false;
+       isFalling = false;
+       hitTop = false;
+       hitSide = true;
    }
-    private void getImage(String path){
+    @Override
+    protected void getImage(String path){
        try{
             left = ImageIO.read(getClass().getResourceAsStream(path + "left.png"));
             right = ImageIO.read(getClass().getResourceAsStream(path + "right.png"));
@@ -63,59 +74,110 @@ public class Player extends Entity {
    
     @Override
    public void update(){
-       if(isJumping == false){
-           if(keyBoardInPut.getSpacePressed() == true){
-           if(energy < 60) {
-                   energy++;
-               }else{
-               isJumping = true;
-           }
-            }else {
-                if(keyBoardInPut.getLeftPressed() == true){
-                   direction = "left";
-                   mapX -= entityWalkSpeed;
-               }
-               if(keyBoardInPut.getRightPressed() == true){
-                   direction = "right";
-                   mapX += entityWalkSpeed;
-               }
-               if(keyBoardInPut.getUpPressed() == true){
-                   direction = "up";
-               }
-           }
-       }
+       if(isGrounded()){
+           // lấy dữ liệu bàn phím vào
+            handleKBInput();
            if(energy > 0 && keyBoardInPut.getSpacePressed() == false){
-               isJumping = true;
-           }
-           if(isJumping == true ){
-               switch(direction){
-                   case "left":
-                       mapX -= jumpSpeed;
-                       break;
-                   case "right":
-                       mapX += entityWalkSpeed;
-                       break;
-               }
-                   mapY -= jumpSpeed;
-                   energy -= 1.5;
-                   if(energy < 0){
-                       energy = 0;
-                       isJumping = false;
-                   }
-           }
-       
-        spriteCounter++;
-            if(spriteCounter > 12 ){
-                if(spriteNum == 1){
-                    spriteNum = 2;
-                }else if(spriteNum == 2){
-                    spriteNum = 1;
-                }
-                spriteCounter = 0;
+                isJumping = true;
             }
-//        System.out.println(energy);
+       }
+        
+        if(isJumping == true ){
+            collisionOn = false;
+            hitTop = false;
+            collisionOn = gamePanel.collisionChecker.checkTile(this,"jump"); 
+//            System.out.println("check Jump");
+            if(!collisionOn){
+                switch(direction){
+                    case "left":
+                        mapX -= jumpSpeed;
+                        break;
+                    case "right":
+                        mapX += jumpSpeed;
+                        break;
+                }
+                mapY -= jumpSpeed*1.5;
+                energy -= 1;
+                if(energy <= 0){
+                    energy = 0;
+                    isJumping = false;
+                    isFalling = true;
+                }
+            }else{
+                if(!hitTop){
+                    setKnockBackInfo();
+                }else{
+                    mapY -= 2;
+                }
+                     
+            }
+        }
+        // dang looi o falling hitside direction left
+        // ko nhan change direction
+        if(isFalling == true){
+            collisionOn = false;
+            hitSide = false;
+            collisionOn = gamePanel.collisionChecker.checkTile(this,"fall");
+//            System.out.println("check Fall");
+            if(hitSide){
+                if("left".equals(direction)) {
+                    direction = "right";
+                }
+                else if("right".equals(direction)){
+                    direction = "left";
+                }
+                collisionOn = false;
+            }
+            if(!collisionOn){
+                switch(direction){
+                    case "left":
+                        mapX -= fallSpeed;
+                        break;
+                    case "right":
+                        mapX += fallSpeed;
+                        break;
+                }
+                    mapY += fallSpeed;
+            }
+            
+        }    
+        delay();
+        
+//        System.out.println("Energy " + energy);
+//        System.out.println("Jumping " + isJumping);
+//        System.out.println("Falling " + isFalling);
+//        System.out.println("HitTop " + hitTop);
+//        System.out.println("HitSide " + hitSide);
+//        System.out.println("Direction " +direction);
+//        System.out.println("Collision " + collisionOn);
    }
-   
+   private void setKnockBackInfo(){
+       if(direction.equals("left"))     direction = "right";
+       else if(direction.equals("right"))    direction = "left";
+       
+       energy = 10;
+   }
+   private void handleKBInput(){
+    if(keyBoardInPut.getSpacePressed() == true){
+            if(energy < 50) {
+                energy++;
+            }
+    }else{
+        if(keyBoardInPut.getLeftPressed() == true){
+            direction = "left";
+            mapX -= entityWalkSpeed;
+        }
+        if(keyBoardInPut.getRightPressed() == true){
+            direction = "right";
+            mapX += entityWalkSpeed;
+        }
+        if(keyBoardInPut.getUpPressed() == true){
+            direction = "up";
+        }
+    }
+
+       
+   }
     @Override
    public void draw(Graphics g2){
        BufferedImage image = null;
@@ -135,12 +197,56 @@ public class Player extends Entity {
        if(image == null){
            System.out.println("null");
        }
-            g2.drawImage(image, mapX, mapY,  null);
+        g2.drawImage(image, mapX, mapY,  null);
       
    }
    private boolean isGrounded(){
-       int bns=1231221;
-       return true;
+       return isJumping == false && isFalling == false;
    }
-
+   private void delay(){
+       spriteCounter++;
+            if(spriteCounter > 12 ){
+                if(spriteNum == 1){
+                    spriteNum = 2;
+                }else if(spriteNum == 2){
+                    spriteNum = 1;
+                }
+                spriteCounter = 0;
+            }
+   }
+   public void setHitSide(){
+       hitSide = !hitSide;
+   }
+   public void setHitTop(){
+       energy = 0;
+       hitTop = true;
+   }
+   public void setIsJumping(){
+       isJumping = !isJumping;
+   }
+   public void setIsFalling(){
+       isFalling = !isFalling;
+   }
+   public String getDirection(){
+       return direction;
+   }
+   public int getMapX(){
+       return mapX;
+   }
+   public int getMapY(){
+       return mapY;
+   }
+   public Rectangle getSolidArea(){
+       return solidArea;
+   }
+   public int getJumpSpeed(){
+       return jumpSpeed;
+   }
+   public void setPlayerCollision(boolean bool){
+       collisionOn = bool;
+   }
+   public int getFallSpeed(){
+       return fallSpeed;
+   }
+   
 }

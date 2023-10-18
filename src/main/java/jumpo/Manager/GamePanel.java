@@ -1,6 +1,7 @@
 
 package jumpo.Manager;
 
+import Collision.CollisionCheck;
 import Entity.Player;
 import InPut.KeyBoardInPut;
 import Tile.BackGround;
@@ -37,7 +38,8 @@ public class GamePanel extends JPanel implements Runnable{
     KeyBoardInPut keyBoardInPut = new KeyBoardInPut();
     public Player player = new Player(this,keyBoardInPut);
     BackGround backGround = new BackGround();
-    TileManager tileManager = new TileManager(this);
+    public TileManager tileManager = new TileManager(this);
+    public CollisionCheck collisionChecker = new CollisionCheck(this);
     Thread gameThread;   
     
     public GamePanel(){

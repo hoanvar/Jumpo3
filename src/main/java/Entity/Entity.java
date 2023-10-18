@@ -8,19 +8,19 @@ import java.awt.image.BufferedImage;
 
 abstract class Entity {
     
-    public int  mapX, mapY;
-    public int entityWalkSpeed;
+    protected int  mapX, mapY;
+    protected int entityWalkSpeed;
     
-    public BufferedImage left, right;
-    public String direction;
+    protected BufferedImage left, right;
+    protected String direction;
     
-    int spriteCounter = 0;
-    public int spriteNum = 1;
+    protected int spriteCounter = 0;
+    protected int spriteNum = 1;
     
-    public Rectangle solidArea ;
-    public boolean collisionOn = false;
+    protected Rectangle solidArea ;
+    protected boolean collisionOn = false;
     
-//    public abstract void getImage(String path);
+    protected abstract void getImage(String path);
     public abstract void update();
     public abstract void draw(Graphics g2);
 }

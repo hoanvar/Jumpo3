@@ -32,6 +32,8 @@ public class TileManager {
             tile[1] = new Tile();
             tile[1].image = ImageIO.read(getClass().getResourceAsStream("/Map/TileSrc/TileImage/1.png"));
             tile[1].image = Tool.scaleImage(tile[1].image, gamePanel.tileSize, gamePanel.tileSize);
+            tile[1].collision = true;
+            
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -79,5 +81,13 @@ public class TileManager {
             }
                 
         }
+    }
+    public int getMapTileNum(int row, int col){
+        return mapTileNum[row][col];
+    }
+    public boolean getTileCollision(int number){
+        if (tile[number] != null)
+            return tile[number].collision;
+        else return false;
     }
 }
