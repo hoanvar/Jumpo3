@@ -19,8 +19,8 @@ public class Player extends Entity {
     KeyBoardInPut keyBoardInPut = new KeyBoardInPut();
     
     private int energy;
-    private int jumpSpeed;
-    private int fallSpeed;
+    private int xSpeed;
+    private int ySpeed;
     private BufferedImage lastImage;
     private boolean isJumping;
     private boolean isFalling;
@@ -41,8 +41,8 @@ public class Player extends Entity {
        direction = "right";
        energy = 0;
        entityWalkSpeed = 2;
-       jumpSpeed = 3;
-       fallSpeed = 3;
+       xSpeed = 3;
+       ySpeed = 5;
        isJumping = false;
        isFalling = false;
        hitTop = false;
@@ -75,7 +75,6 @@ public class Player extends Entity {
     @Override
    public void update(){
        if(isGrounded()){
-           // lấy dữ liệu bàn phím vào
             handleKBInput();
            if(energy > 0 && keyBoardInPut.getSpacePressed() == false){
                 isJumping = true;
@@ -90,13 +89,13 @@ public class Player extends Entity {
             if(!collisionOn){
                 switch(direction){
                     case "left":
-                        mapX -= jumpSpeed;
+                        mapX -= xSpeed;
                         break;
                     case "right":
-                        mapX += jumpSpeed;
+                        mapX += xSpeed;
                         break;
                 }
-                mapY -= jumpSpeed*1.5;
+                mapY -= ySpeed;
                 energy -= 1;
                 if(energy <= 0){
                     energy = 0;
@@ -106,14 +105,11 @@ public class Player extends Entity {
             }else{
                 if(!hitTop){
                     setKnockBackInfo();
-                }else{
-                    mapY -= 2;
                 }
                      
             }
         }
-        // dang looi o falling hitside direction left
-        // ko nhan change direction
+
         if(isFalling == true){
             collisionOn = false;
             hitSide = false;
@@ -131,25 +127,25 @@ public class Player extends Entity {
             if(!collisionOn){
                 switch(direction){
                     case "left":
-                        mapX -= fallSpeed;
+                        mapX -= xSpeed;
                         break;
                     case "right":
-                        mapX += fallSpeed;
+                        mapX += xSpeed;
                         break;
                 }
-                    mapY += fallSpeed;
+                    mapY += ySpeed;
             }
             
         }    
         delay();
         
-//        System.out.println("Energy " + energy);
-//        System.out.println("Jumping " + isJumping);
-//        System.out.println("Falling " + isFalling);
-//        System.out.println("HitTop " + hitTop);
-//        System.out.println("HitSide " + hitSide);
-//        System.out.println("Direction " +direction);
-//        System.out.println("Collision " + collisionOn);
+        System.out.println("Energy " + energy);
+        System.out.println("Jumping " + isJumping);
+        System.out.println("Falling " + isFalling);
+        System.out.println("HitTop " + hitTop);
+        System.out.println("HitSide " + hitSide);
+        System.out.println("Direction " +direction);
+        System.out.println("Collision " + collisionOn);
    }
    private void setKnockBackInfo(){
        if(direction.equals("left"))     direction = "right";
@@ -165,11 +161,13 @@ public class Player extends Entity {
     }else{
         if(keyBoardInPut.getLeftPressed() == true){
             direction = "left";
-            mapX -= entityWalkSpeed;
+            if(!gamePanel.collisionChecker.checkTile(this,"walk"))
+                mapX -= entityWalkSpeed;
         }
         if(keyBoardInPut.getRightPressed() == true){
             direction = "right";
-            mapX += entityWalkSpeed;
+            if(!gamePanel.collisionChecker.checkTile(this,"walk"))
+                mapX += entityWalkSpeed;
         }
         if(keyBoardInPut.getUpPressed() == true){
             direction = "up";
@@ -239,14 +237,17 @@ public class Player extends Entity {
    public Rectangle getSolidArea(){
        return solidArea;
    }
-   public int getJumpSpeed(){
-       return jumpSpeed;
+   public int getWalkSpeed(){
+       return entityWalkSpeed;
+   }
+   public int getXSpeed(){
+       return xSpeed;
    }
    public void setPlayerCollision(boolean bool){
        collisionOn = bool;
    }
-   public int getFallSpeed(){
-       return fallSpeed;
+   public int getYSpeed(){
+       return ySpeed;
    }
    
 }

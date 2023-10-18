@@ -25,7 +25,7 @@ public class CollisionCheck {
         int tileNum1,tileNum2;
         switch(type){
             case "jump" :
-                playerTopRow = (playerTopY - player.getJumpSpeed()) / gamePanel.tileSize;
+                playerTopRow = (playerTopY - player.getYSpeed()) / gamePanel.tileSize;
                 tileNum1 = gamePanel.tileManager.getMapTileNum(playerTopRow, playerLeftCol);
                 tileNum2 = gamePanel.tileManager.getMapTileNum(playerTopRow, playerRightCol);
                 if(gamePanel.tileManager.getTileCollision(tileNum1) == true || gamePanel.tileManager.getTileCollision(tileNum2) == true){
@@ -38,18 +38,19 @@ public class CollisionCheck {
                     case "up":
         
                     case "left":
-                        playerLeftCol = (playerLeftX - player.getJumpSpeed()) / gamePanel.tileSize;
+                        if(playerLeftX - player.getXSpeed() < 0) return true;
+                        playerLeftCol = (playerLeftX - player.getXSpeed()) / gamePanel.tileSize;
                         tileNum1 = gamePanel.tileManager.getMapTileNum(playerTopRow, playerLeftCol);
-//                        tileNum2 = gamePanel.tileManager.getMapTileNum(playerBottomRow, playerLeftCol);
-                        if(gamePanel.tileManager.getTileCollision(tileNum1) == true){
+                        tileNum2 = gamePanel.tileManager.getMapTileNum(playerBottomRow, playerLeftCol);
+                        if(gamePanel.tileManager.getTileCollision(tileNum1) == true || gamePanel.tileManager.getTileCollision(tileNum2) == true){
                                 return true;
                         }
                         break;
                     case "right":
-                        playerRightCol = (playerRightX + player.getJumpSpeed()) / gamePanel.tileSize;
+                        playerRightCol = (playerRightX + player.getXSpeed()) / gamePanel.tileSize;
                         tileNum1 = gamePanel.tileManager.getMapTileNum(playerTopRow, playerRightCol);
-//                        tileNum2 = gamePanel.tileManager.getMapTileNum(playerBottomRow, playerRightCol);
-                        if(gamePanel.tileManager.getTileCollision(tileNum1) == true ){
+                        tileNum2 = gamePanel.tileManager.getMapTileNum(playerBottomRow, playerRightCol);
+                        if(gamePanel.tileManager.getTileCollision(tileNum1) == true ||gamePanel.tileManager.getTileCollision(tileNum2) == true){
                             return true;
                         }
                         break;
@@ -57,31 +58,59 @@ public class CollisionCheck {
                 break;
             case "fall":
                 
-                playerBottomRow = (playerBottomY + player.getFallSpeed()) / gamePanel.tileSize;
+                playerBottomRow = (playerBottomY + player.getYSpeed()) / gamePanel.tileSize;
                 tileNum1 = gamePanel.tileManager.getMapTileNum(playerBottomRow, playerLeftCol);
                 tileNum2 = gamePanel.tileManager.getMapTileNum(playerBottomRow, playerRightCol);
                 if(gamePanel.tileManager.getTileCollision(tileNum1) == true || gamePanel.tileManager.getTileCollision(tileNum2) == true){
                     player.setIsFalling();
-//                    System.out.println("check fall");
-//                  player.setHitBot();
                     return true;
                 }
                 switch(player.getDirection()){
                     case "left":
-                        playerLeftCol = (playerLeftX - player.getFallSpeed()) / gamePanel.tileSize;
-//                        tileNum1 = gamePanel.tileManager.getMapTileNum(playerTopRow, playerLeftCol);
+                        if(playerLeftX - player.getXSpeed() < 0) {player.setHitSide();return true;}
+                        playerLeftCol = (playerLeftX - player.getXSpeed()) / gamePanel.tileSize;
+                        tileNum1 = gamePanel.tileManager.getMapTileNum(playerTopRow, playerLeftCol);
                         tileNum2 = gamePanel.tileManager.getMapTileNum(playerBottomRow, playerLeftCol);
-                        if(gamePanel.tileManager.getTileCollision(tileNum2) == true){
+                        if(gamePanel.tileManager.getTileCollision(tileNum1) == true || gamePanel.tileManager.getTileCollision(tileNum2) == true){
                             player.setHitSide();
                             return true;
                         }
                         break;
                     case "right":
-                        playerRightCol = (playerRightX + player.getFallSpeed()) / gamePanel.tileSize;
-//                        tileNum1 = gamePanel.tileManager.getMapTileNum(playerTopRow, playerRightCol);
+                        playerRightCol = (playerRightX + player.getXSpeed()) / gamePanel.tileSize;
+                        tileNum1 = gamePanel.tileManager.getMapTileNum(playerTopRow, playerRightCol);
                         tileNum2 = gamePanel.tileManager.getMapTileNum(playerBottomRow, playerRightCol);
-                        if( gamePanel.tileManager.getTileCollision(tileNum2) == true){
+                        if(gamePanel.tileManager.getTileCollision(tileNum1) == true || gamePanel.tileManager.getTileCollision(tileNum2) == true){
                             player.setHitSide();
+                            return true;
+                        }
+                        break;
+                }
+              
+                break;
+            case "walk":
+                playerBottomRow = (playerBottomY + player.getYSpeed()) / gamePanel.tileSize;
+                tileNum1 = gamePanel.tileManager.getMapTileNum(playerBottomRow, playerLeftCol);
+                tileNum2 = gamePanel.tileManager.getMapTileNum(playerBottomRow, playerRightCol);
+                if(gamePanel.tileManager.getTileCollision(tileNum1) == true || gamePanel.tileManager.getTileCollision(tileNum2) == true){
+                    player.setIsFalling();
+                    return false;
+                }
+                switch(player.getDirection()){
+                    case "left":
+                        if(playerLeftX - player.getWalkSpeed() < 0) return true;
+                        playerLeftCol = (playerLeftX - player.getWalkSpeed()) / gamePanel.tileSize;
+                        tileNum1 = gamePanel.tileManager.getMapTileNum(playerTopRow, playerLeftCol);
+                        tileNum2 = gamePanel.tileManager.getMapTileNum(playerBottomRow, playerLeftCol);
+                        if(gamePanel.tileManager.getTileCollision(tileNum1) == true || gamePanel.tileManager.getTileCollision(tileNum2) == true){
+                            return true;
+                        }
+                        break;
+                    case "right":
+                        playerRightCol = (playerRightX + player.getWalkSpeed()) / gamePanel.tileSize;
+                        tileNum1 = gamePanel.tileManager.getMapTileNum(playerTopRow, playerRightCol);
+                        tileNum2 = gamePanel.tileManager.getMapTileNum(playerBottomRow, playerRightCol);
+                        if(gamePanel.tileManager.getTileCollision(tileNum1) == true || gamePanel.tileManager.getTileCollision(tileNum2) == true){
                             return true;
                         }
                         break;

@@ -83,6 +83,8 @@ public class TileManager {
         }
     }
     public int getMapTileNum(int row, int col){
+//        System.out.println("row: " + row + " col " + col );
+        if(col < 0 || col >= 24 ) return 1;
         return mapTileNum[row][col];
     }
     public boolean getTileCollision(int number){
