@@ -41,7 +41,11 @@ public class TileManager {
     }
     
     private void loadMap(String path) throws IOException{
-        File  file = new File("C:\\Users\\FPT-SHOP\\Desktop\\game java\\MyGame\\src\\main\\resources\\Map\\TileSrc\\Text\\0.txt");
+//        File file = new File("/Other Sources/src/Map/TileSrc/Text/0.txt");
+        File file = new File("C:\\Users\\FPT-SHOP\\Desktop\\game java\\MyGame\\src\\main\\resources\\Map\\TileSrc\\Text\\0.txt");
+        if(!file.exists()){
+            System.out.println("no exist");
+        }
         BufferedReader br = new BufferedReader(new FileReader(file));
         int row = 0;
         int col = 0;
@@ -58,12 +62,12 @@ public class TileManager {
                 row++;
             }
         }
-        for(int i=0 ; i<12 ; i++){
-            for(int j=0 ; j<24; j++){
-                System.out.print(mapTileNum[i][j] + " ");
-            }
-            System.out.println("");
-        }
+//        for(int i=0 ; i<12 ; i++){
+//            for(int j=0 ; j<24; j++){
+//                System.out.print(mapTileNum[i][j] + " ");
+//            }
+//            System.out.println("");
+//        }
     }
     public void draw(Graphics2D g2){
 //        System.out.println("tile manager draw com");

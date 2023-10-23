@@ -30,23 +30,23 @@ public class Player extends Entity {
     public Player (GamePanel gamePanel, KeyBoardInPut keyBoardInPut){
         this.gamePanel = gamePanel;
         this.keyBoardInPut = keyBoardInPut;
-        solidArea = new Rectangle(8, 16, 32, 32);
+        solidArea = new Rectangle(8, 16, 32, 30);
         setDefaultValue();
         getImage("/PlayerImage/");
         
     }   
    private void setDefaultValue(){
        mapX = 10 * gamePanel.tileSize;
-       mapY = 10 * gamePanel.tileSize - 60;
+       mapY = 10 * gamePanel.tileSize ;
        direction = "right";
        energy = 0;
-       entityWalkSpeed = 2;
+       entityWalkSpeed = 3;
        xSpeed = 3;
        ySpeed = 5;
        isJumping = false;
        isFalling = false;
        hitTop = false;
-       hitSide = true;
+       hitSide = false;
    }
     @Override
     protected void getImage(String path){
@@ -85,7 +85,6 @@ public class Player extends Entity {
             collisionOn = false;
             hitTop = false;
             collisionOn = gamePanel.collisionChecker.checkTile(this,"jump"); 
-//            System.out.println("check Jump");
             if(!collisionOn){
                 switch(direction){
                     case "left":
@@ -105,8 +104,7 @@ public class Player extends Entity {
             }else{
                 if(!hitTop){
                     setKnockBackInfo();
-                }
-                     
+                }    
             }
         }
 
@@ -114,7 +112,6 @@ public class Player extends Entity {
             collisionOn = false;
             hitSide = false;
             collisionOn = gamePanel.collisionChecker.checkTile(this,"fall");
-//            System.out.println("check Fall");
             if(hitSide){
                 if("left".equals(direction)) {
                     direction = "right";
@@ -134,18 +131,20 @@ public class Player extends Entity {
                         break;
                 }
                     mapY += ySpeed;
+            }else{
+                
             }
             
         }    
         delay();
         
-        System.out.println("Energy " + energy);
-        System.out.println("Jumping " + isJumping);
-        System.out.println("Falling " + isFalling);
-        System.out.println("HitTop " + hitTop);
-        System.out.println("HitSide " + hitSide);
-        System.out.println("Direction " +direction);
-        System.out.println("Collision " + collisionOn);
+//        System.out.println("Energy " + energy);
+//        System.out.println("Jumping " + isJumping);
+//        System.out.println("Falling " + isFalling);
+//        System.out.println("HitTop " + hitTop);
+//        System.out.println("HitSide " + hitSide);
+//        System.out.println("Direction " +direction);
+//        System.out.println("Collision " + collisionOn);
    }
    private void setKnockBackInfo(){
        if(direction.equals("left"))     direction = "right";

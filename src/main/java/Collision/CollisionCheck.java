@@ -1,4 +1,3 @@
-
 package Collision;
 
 import Entity.Player;
@@ -89,16 +88,11 @@ public class CollisionCheck {
               
                 break;
             case "walk":
-                playerBottomRow = (playerBottomY + player.getYSpeed()) / gamePanel.tileSize;
-                tileNum1 = gamePanel.tileManager.getMapTileNum(playerBottomRow, playerLeftCol);
-                tileNum2 = gamePanel.tileManager.getMapTileNum(playerBottomRow, playerRightCol);
-                if(gamePanel.tileManager.getTileCollision(tileNum1) == true || gamePanel.tileManager.getTileCollision(tileNum2) == true){
-                    player.setIsFalling();
-                    return false;
-                }
+                
+//    
                 switch(player.getDirection()){
                     case "left":
-                        if(playerLeftX - player.getWalkSpeed() < 0) return true;
+//                        if(playerLeftX - player.getWalkSpeed() < 0) return true;
                         playerLeftCol = (playerLeftX - player.getWalkSpeed()) / gamePanel.tileSize;
                         tileNum1 = gamePanel.tileManager.getMapTileNum(playerTopRow, playerLeftCol);
                         tileNum2 = gamePanel.tileManager.getMapTileNum(playerBottomRow, playerLeftCol);
@@ -115,7 +109,13 @@ public class CollisionCheck {
                         }
                         break;
                 }
-              
+                playerBottomRow = (playerBottomY + player.getYSpeed()) / gamePanel.tileSize;
+                tileNum1 = gamePanel.tileManager.getMapTileNum(playerBottomRow, playerLeftCol);
+                tileNum2 = gamePanel.tileManager.getMapTileNum(playerBottomRow, playerRightCol);
+                if(gamePanel.tileManager.getTileCollision(tileNum1) == true || gamePanel.tileManager.getTileCollision(tileNum2) == true){
+                    player.setIsFalling();
+                    return false;
+                }
                 break;
                 
         }  
