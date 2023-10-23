@@ -3,6 +3,7 @@ package Tile;
 
 import Tool.Tool;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -14,15 +15,18 @@ import jumpo.Manager.GamePanel;
 public class TileManager {
     GamePanel gamePanel;
     private Tile[] tile;
-    private int mapTileNum[][];
+    //         [mapNum][row][col]
+    private int mapTileNum[][][];
     
     public TileManager(GamePanel gamePanel){
         this.gamePanel = gamePanel;
         tile = new Tile[10];
-        mapTileNum = new int[gamePanel.maxScreenRow][gamePanel.maxScreenCol];
+        mapTileNum = new int[10][gamePanel.maxScreenRow][gamePanel.maxScreenCol];
         getTileImage();
         try {
-            loadMap("/Map/Tile/Text/0.txt");
+            for(int i = 0 ; i<= 1 ; i++){
+                loadMap(i);
+            }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -40,9 +44,10 @@ public class TileManager {
         
     }
     
-    private void loadMap(String path) throws IOException{
+    private void loadMap(int mapNumber) throws IOException{
+        String abPath = "C:\\Users\\FPT-SHOP\\Desktop\\game java\\MyGame\\src\\main\\resources\\Map\\TileSrc\\Text\\";
 //        File file = new File("/Other Sources/src/Map/TileSrc/Text/0.txt");
-        File file = new File("C:\\Users\\FPT-SHOP\\Desktop\\game java\\MyGame\\src\\main\\resources\\Map\\TileSrc\\Text\\0.txt");
+        File file = new File(abPath + String.valueOf(mapNumber) + ".txt");
         if(!file.exists()){
             System.out.println("no exist");
         }
@@ -54,7 +59,7 @@ public class TileManager {
             while(col < gamePanel.maxScreenCol){
                 String sNumber[] = line.split(" ");
                 int number = Integer.parseInt(sNumber[col]);
-                mapTileNum[row][col] = number;
+                mapTileNum[mapNumber][row][col] = number;
                 col++;
             }
             if(col == gamePanel.maxScreenCol){
@@ -62,19 +67,19 @@ public class TileManager {
                 row++;
             }
         }
-//        for(int i=0 ; i<12 ; i++){
-//            for(int j=0 ; j<24; j++){
-//                System.out.print(mapTileNum[i][j] + " ");
-//            }
-//            System.out.println("");
-//        }
+        for(int i=0 ; i<12 ; i++){
+            for(int j=0 ; j<24; j++){
+                System.out.print(mapTileNum[mapNumber][i][j] + " ");
+            }
+            System.out.println("");
+        }
     }
-    public void draw(Graphics2D g2){
+    public void draw(Graphics2D g2,int mapNum){
 //        System.out.println("tile manager draw com");
         int col = 0;
         int row = 0;
         while(col < gamePanel.maxScreenCol && row < gamePanel.maxScreenRow){
-            int tileNum = mapTileNum[row][col];
+            int tileNum = mapTileNum[mapNum][row][col];
             if(tileNum != 0){
                 g2.drawImage(tile[tileNum].image, col*gamePanel.tileSize, row*gamePanel.tileSize , null);
             }
@@ -86,14 +91,18 @@ public class TileManager {
                 
         }
     }
-    public int getMapTileNum(int row, int col){
+    public int getMapTileNum(int mapNum, int row, int col){
 //        System.out.println("row: " + row + " col " + col );
         if(col < 0 || col >= 24 ) return 1;
-        return mapTileNum[row][col];
+        return mapTileNum[mapNum][row][col];
     }
     public boolean getTileCollision(int number){
         if (tile[number] != null)
             return tile[number].collision;
         else return false;
+    }
+    class Tile {
+        public BufferedImage image;
+        public boolean collision = false;
     }
 }

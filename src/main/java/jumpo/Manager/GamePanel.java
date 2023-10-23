@@ -40,6 +40,7 @@ public class GamePanel extends JPanel implements Runnable{
     BackGround backGround = new BackGround();
     public TileManager tileManager = new TileManager(this);
     public CollisionCheck collisionChecker = new CollisionCheck(this);
+    public int mapNum ;
     Thread gameThread;   
     
     public GamePanel(){
@@ -48,6 +49,7 @@ public class GamePanel extends JPanel implements Runnable{
         this.setDoubleBuffered(true);
         this.addKeyListener(keyBoardInPut);
         this.setFocusable(true);
+        mapNum = 0;
     }
 
     public void  startGameThread(){
@@ -96,7 +98,7 @@ public class GamePanel extends JPanel implements Runnable{
         Graphics2D g2 = (Graphics2D)g;
         
         backGround.draw(g2);
-        tileManager.draw(g2);
+        tileManager.draw(g2,mapNum);
         player.draw(g2);
         
         
