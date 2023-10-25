@@ -47,7 +47,7 @@ public class CollisionCheck {
                     case "left":
                         if(playerLeftX - player.getXSpeed() < 0) return true;
                         playerLeftCol = (playerLeftX - player.getXSpeed()) / gamePanel.tileSize;
-                        System.out.println("mapnum " + gamePanel.mapNum + " row " + playerTopRow  );
+//                        System.out.println("mapnum " + gamePanel.mapNum + " row " + playerTopRow  );
                         tileNum1 = gamePanel.tileManager.getMapTileNum(gamePanel.mapNum, playerTopRow, playerLeftCol);
                         tileNum2 = gamePanel.tileManager.getMapTileNum(gamePanel.mapNum, playerBottomRow, playerLeftCol);
                         if(gamePanel.tileManager.getTileCollision(tileNum1) == true || gamePanel.tileManager.getTileCollision(tileNum2) == true){
