@@ -14,8 +14,12 @@ import jumpo.Manager.GamePanel;
 public class Player extends Entity {
     GamePanel gamePanel;
     KeyBoardInPut keyBoardInPut = new KeyBoardInPut();
+    BufferedImage jump1, fall1, knockBack1, longDistanceFall1;
+    BufferedImage jump2, fall2, knockBack2, longDistanceFall2;
+    BufferedImage spaceHold;
     private String lastDirection;
     private int energy;
+    private int fallDistance;
     private int xSpeed;
     private int ySpeed;
     private boolean isJumping;
@@ -41,6 +45,7 @@ public class Player extends Entity {
        direction = "right";
        lastDirection = "right";
        energy = 0;
+       fallDistance = 0;
        entityWalkSpeed = 3;
        walkcount = 0;
        xSpeed = 3;
@@ -59,18 +64,36 @@ public class Player extends Entity {
             right[0] = Tool.scaleImage(right[0], gamePanel.playerSize, gamePanel.playerSize);
             left[0] = Tool.flipImage(right[0]);
             
-            right[1] = ImageIO.read(getClass().getResourceAsStream(path + "leftfootforward.png"));
+            right[1] = ImageIO.read(getClass().getResourceAsStream(path + "leftFootForward.png"));
             right[1] = Tool.scaleImage(right[1], gamePanel.playerSize, gamePanel.playerSize);
             left[1] = Tool.flipImage(right[1]);
             
-            right[2] = ImageIO.read(getClass().getResourceAsStream(path + "midrun.png"));
+            right[2] = ImageIO.read(getClass().getResourceAsStream(path + "midRun.png"));
             right[2] = Tool.scaleImage(right[2], gamePanel.playerSize, gamePanel.playerSize);
             left[2] = Tool.flipImage(right[2]);
             
-            right[3] = ImageIO.read(getClass().getResourceAsStream(path + "rightfootforward.png"));
+            right[3] = ImageIO.read(getClass().getResourceAsStream(path + "rightFootForward.png"));
             right[3] = Tool.scaleImage(right[3], gamePanel.playerSize, gamePanel.playerSize);
             left[3] = Tool.flipImage(right[3]);
             
+            jump1 = ImageIO.read(getClass().getResourceAsStream(path + "jump.png"));
+            jump1 = Tool.scaleImage(jump1, gamePanel.playerSize, gamePanel.playerSize);
+            jump2 = Tool.flipImage(jump1);
+            
+            fall1 = ImageIO.read(getClass().getResourceAsStream(path + "fall.png"));
+            fall1 = Tool.scaleImage(fall1, gamePanel.playerSize, gamePanel.playerSize);
+            fall2 = Tool.flipImage(fall1);
+            
+            knockBack1 = ImageIO.read(getClass().getResourceAsStream(path + "knockBack.png"));
+            knockBack1 = Tool.scaleImage(knockBack1, gamePanel.playerSize, gamePanel.playerSize);
+            knockBack2 = Tool.flipImage(knockBack1);
+            
+            longDistanceFall1 = ImageIO.read(getClass().getResourceAsStream(path + "longDistanceFall.png"));
+            longDistanceFall1 = Tool.scaleImage(longDistanceFall1, gamePanel.playerSize, gamePanel.playerSize);
+            longDistanceFall2 = Tool.flipImage(longDistanceFall1);
+            
+            spaceHold = ImageIO.read(getClass().getResourceAsStream(path + "spaceHold.png"));
+            spaceHold = Tool.scaleImage(spaceHold, gamePanel.playerSize, gamePanel.playerSize);
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -107,6 +130,7 @@ public class Player extends Entity {
                     energy = 0;
                     isJumping = false;
                     isFalling = true;
+                    fallDistance = 0;
                 }
             }else{
                 if(!hitTop){
@@ -116,6 +140,7 @@ public class Player extends Entity {
         }
 
         if(isFalling == true){
+            fallDistance++;
             collisionOn = false;
             hitSide = false;
             collisionOn = gamePanel.collisionChecker.checkTile(this,"fall");
@@ -129,7 +154,6 @@ public class Player extends Entity {
                 collisionOn = false;
             }
             if(!collisionOn){
-                updated = true;
                 switch(direction){
                     case "left":
                         mapX -= xSpeed;
@@ -165,6 +189,7 @@ public class Player extends Entity {
     }
     else if(keyBoardInPut.isLeftPressed() == true){
         direction = "left";
+        fallDistance = 0;
         if(!gamePanel.collisionChecker.checkTile(this,"walk")){
             mapX -= entityWalkSpeed;
             isWalking = true;
@@ -172,6 +197,7 @@ public class Player extends Entity {
     }
     else if(keyBoardInPut.isRightPressed() == true){
         direction = "right";
+        fallDistance = 0;
         if(!gamePanel.collisionChecker.checkTile(this,"walk")){
             mapX += entityWalkSpeed;
             isWalking = true;
@@ -179,6 +205,7 @@ public class Player extends Entity {
     }
     else if(keyBoardInPut.isUpPressed() == true){
         if(!"up".equals(direction)) lastDirection = direction;
+        fallDistance = 0;
         direction = "up";
         isWalking = false;
     }
@@ -190,13 +217,20 @@ public class Player extends Entity {
    public void draw(Graphics g2){
        BufferedImage image = null;
            if(isFalling){
-               image = getWalkImage(direction, 0);
+               image = getFallImage(direction);
            }else if(isJumping){
-               image = getWalkImage(direction, 0);
+               image = getJumpImage(direction);
            }else if (isWalking){
                image = getWalkImage(direction, spriteNum);
            }else{
-                image = getWalkImage(direction, 0);
+               if(keyBoardInPut.isSpacePressed() == true){
+                   image = spaceHold;
+               }else{
+                   if(fallDistance > 60)    image = longDistanceFall1;
+                   else
+                        image = getWalkImage(direction, 0);
+               }
+                
            }
          
        g2.drawImage(image, mapX, mapY,  null);
@@ -212,6 +246,25 @@ public class Player extends Entity {
            else return right[count];
        }
        
+   }
+   private BufferedImage getFallImage(String direction){
+       if("left".equals(direction)){
+           return fall2;
+       }else if("right".equals(direction)){
+           return fall1;
+       }else{
+           return getFallImage(lastDirection);
+       }
+       
+   }
+   private BufferedImage getJumpImage(String direction){
+       if("left".equals(direction)){
+           return jump2;
+       }else if("right".equals(direction)){
+           return jump1;
+       }else{
+           return getJumpImage(lastDirection);
+       }
    }
    private boolean isGrounded(){
 //       return isJumping == false && isFalling == false && isWalking == false;
