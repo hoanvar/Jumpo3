@@ -178,7 +178,7 @@ public class Player extends Entity {
         }       
     }
     else if(keyBoardInPut.isUpPressed() == true){
-        lastDirection = direction;
+        if(!"up".equals(direction)) lastDirection = direction;
         direction = "up";
         isWalking = false;
     }
@@ -208,12 +208,10 @@ public class Player extends Entity {
        }else if("right".equals(direction)){
            return right[count];
        }else{
-           if("left".equals(lastDirection)){
-               return left[count];
-           }else{
-               return right[count];
-           }
+           if("left".equals(lastDirection))  return left[count];
+           else return right[count];
        }
+       
    }
    private boolean isGrounded(){
 //       return isJumping == false && isFalling == false && isWalking == false;
