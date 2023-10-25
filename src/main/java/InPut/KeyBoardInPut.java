@@ -7,16 +7,16 @@ import java.awt.event.KeyListener;
 public class KeyBoardInPut implements KeyListener{
     private boolean spacePressed, leftPressed, rightPressed, upPressed;
     
-    public boolean getSpacePressed(){
+    public boolean isSpacePressed(){
         return spacePressed;
     }
-    public boolean getLeftPressed(){
+    public boolean isLeftPressed(){
         return leftPressed;
     }
-    public boolean getRightPressed(){
+    public boolean isRightPressed(){
         return rightPressed;
     }
-    public boolean getUpPressed(){
+    public boolean isUpPressed(){
         return upPressed;
     }
     @Override

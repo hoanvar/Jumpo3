@@ -36,7 +36,7 @@ public class Player extends Entity {
         
     }   
    private void setDefaultValue(){
-       mapX = 10 * gamePanel.tileSize;
+       mapX = 20 * gamePanel.tileSize;
        mapY = 10 * gamePanel.tileSize ;
        direction = "right";
        lastDirection = "right";
@@ -56,19 +56,19 @@ public class Player extends Entity {
     protected void getImage(String path){
        try{
             right[0] = ImageIO.read(getClass().getResourceAsStream(path + "left.png"));
-            right[0] = Tool.scaleImage(right[0], gamePanel.tileSize, gamePanel.tileSize);
+            right[0] = Tool.scaleImage(right[0], gamePanel.playerSize, gamePanel.playerSize);
             left[0] = Tool.flipImage(right[0]);
             
             right[1] = ImageIO.read(getClass().getResourceAsStream(path + "leftfootforward.png"));
-            right[1] = Tool.scaleImage(right[1], gamePanel.tileSize, gamePanel.tileSize);
+            right[1] = Tool.scaleImage(right[1], gamePanel.playerSize, gamePanel.playerSize);
             left[1] = Tool.flipImage(right[1]);
             
             right[2] = ImageIO.read(getClass().getResourceAsStream(path + "midrun.png"));
-            right[2] = Tool.scaleImage(right[2], gamePanel.tileSize, gamePanel.tileSize);
+            right[2] = Tool.scaleImage(right[2], gamePanel.playerSize, gamePanel.playerSize);
             left[2] = Tool.flipImage(right[2]);
             
             right[3] = ImageIO.read(getClass().getResourceAsStream(path + "rightfootforward.png"));
-            right[3] = Tool.scaleImage(right[3], gamePanel.tileSize, gamePanel.tileSize);
+            right[3] = Tool.scaleImage(right[3], gamePanel.playerSize, gamePanel.playerSize);
             left[3] = Tool.flipImage(right[3]);
             
         }catch(IOException e){
@@ -82,7 +82,7 @@ public class Player extends Entity {
       
        if(isGrounded()){
            handleKBInput();
-           if(energy > 0 && keyBoardInPut.getSpacePressed() == false){
+           if(energy > 0 && keyBoardInPut.isSpacePressed() == false){
                 isJumping = true;
             }
        }
@@ -148,7 +148,7 @@ public class Player extends Entity {
 //        System.out.println("Falling " + isFalling);
 //        System.out.println("HitTop " + hitTop);
 //        System.out.println("HitSide " + hitSide);
-//        System.out.println("Direction " +direction);
+//        System.out.println("Direction " + direction);
 //        System.out.println("Collision " + collisionOn);
    }
    private void setKnockBackInfo(){
@@ -158,26 +158,26 @@ public class Player extends Entity {
 //       energy = 10;
    }
    private void handleKBInput(){
-    if(keyBoardInPut.getSpacePressed() == true){
+    if(keyBoardInPut.isSpacePressed() == true){
             if(energy < 50) {
                 energy++;
             }
     }
-    else if(keyBoardInPut.getLeftPressed() == true){
+    else if(keyBoardInPut.isLeftPressed() == true){
         direction = "left";
         if(!gamePanel.collisionChecker.checkTile(this,"walk")){
             mapX -= entityWalkSpeed;
             isWalking = true;
         }     
     }
-    else if(keyBoardInPut.getRightPressed() == true){
+    else if(keyBoardInPut.isRightPressed() == true){
         direction = "right";
         if(!gamePanel.collisionChecker.checkTile(this,"walk")){
             mapX += entityWalkSpeed;
             isWalking = true;
         }       
     }
-    else if(keyBoardInPut.getUpPressed() == true){
+    else if(keyBoardInPut.isUpPressed() == true){
         lastDirection = direction;
         direction = "up";
         isWalking = false;
@@ -199,7 +199,6 @@ public class Player extends Entity {
                 image = getWalkImage(direction, 0);
            }
          
-        System.out.println("draw");
        g2.drawImage(image, mapX, mapY,  null);
       
    }
@@ -212,7 +211,7 @@ public class Player extends Entity {
            if("left".equals(lastDirection)){
                return left[count];
            }else{
-               return left[count];
+               return right[count];
            }
        }
    }
@@ -222,7 +221,6 @@ public class Player extends Entity {
    }
    private void delay(){
        spriteCounter++;
-       System.out.println(spriteCounter);
             if(spriteCounter > 12 ){
                 if(spriteNum == 1){
                     spriteNum = 2;
@@ -241,9 +239,6 @@ public class Player extends Entity {
            mapY -= gamePanel.screenHeight;
        }
    }
-//   private boolean isUpdated(){
-//       return updated;
-//   }
    public void setHitSide(){
        hitSide = !hitSide;
    }

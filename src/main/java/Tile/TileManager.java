@@ -21,7 +21,7 @@ public class TileManager {
     public TileManager(GamePanel gamePanel){
         this.gamePanel = gamePanel;
         tile = new Tile[10];
-        mapTileNum = new int[10][gamePanel.maxScreenRow][gamePanel.maxScreenCol];
+        mapTileNum = new int[10][gamePanel.maxScreenRow+1][gamePanel.maxScreenCol];
         getTileImage();
         try {
             for(int i = 0 ; i<= 1 ; i++){
@@ -48,9 +48,7 @@ public class TileManager {
         String abPath = "C:\\Users\\FPT-SHOP\\Desktop\\game java\\MyGame\\src\\main\\resources\\Map\\TileSrc\\Text\\";
 //        File file = new File("/Other Sources/src/Map/TileSrc/Text/0.txt");
         File file = new File(abPath + String.valueOf(mapNumber) + ".txt");
-        if(!file.exists()){
-            System.out.println("no exist");
-        }
+
         BufferedReader br = new BufferedReader(new FileReader(file));
         int row = 0;
         int col = 0;
@@ -67,15 +65,11 @@ public class TileManager {
                 row++;
             }
         }
-        for(int i=0 ; i<12 ; i++){
-            for(int j=0 ; j<24; j++){
-                System.out.print(mapTileNum[mapNumber][i][j] + " ");
-            }
-            System.out.println("");
-        }
+        for(int i = 0 ; i < 48 ; i++){
+            mapTileNum[mapNumber][24][i] = 0;
+        }                
     }
     public void draw(Graphics2D g2,int mapNum){
-//        System.out.println("tile manager draw com");
         int col = 0;
         int row = 0;
         while(col < gamePanel.maxScreenCol && row < gamePanel.maxScreenRow){
@@ -92,8 +86,9 @@ public class TileManager {
         }
     }
     public int getMapTileNum(int mapNum, int row, int col){
-//        System.out.println("row: " + row + " col " + col );
-        if(col < 0 || col >= 24 ) return 1;
+//        System.out.println("mapnum " + mapNum + " row " + row + " col " + col);
+        if(row < 0) return 0;
+        if(col < 0 || col >= 48 ) return 1;
         return mapTileNum[mapNum][row][col];
     }
     public boolean getTileCollision(int number){
