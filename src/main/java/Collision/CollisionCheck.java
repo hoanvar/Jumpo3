@@ -66,7 +66,7 @@ public class CollisionCheck {
                 break;
             case "fall":
                 playerBottomRow = (playerBottomY + player.getYSpeed()) / gamePanel.tileSize;
-                if(playerBottomRow > 23){
+                if(playerBottomRow >= gamePanel.maxScreenRow){
                     gamePanel.mapNum--;
                     player.resetYMapChange("previous");
                     playerTopY = player.getMapY() + rect.y;

@@ -21,10 +21,10 @@ public class TileManager {
     public TileManager(GamePanel gamePanel){
         this.gamePanel = gamePanel;
         tile = new Tile[10];
-        mapTileNum = new int[10][gamePanel.maxScreenRow+1][gamePanel.maxScreenCol];
+        mapTileNum = new int[10][gamePanel.maxScreenRow][gamePanel.maxScreenCol];
         getTileImage();
         try {
-            for(int i = 0 ; i<= 1 ; i++){
+            for(int i = 0 ; i< gamePanel.maxMapNum ; i++){
                 loadMap(i);
             }
         } catch (IOException ex) {
@@ -65,9 +65,7 @@ public class TileManager {
                 row++;
             }
         }
-        for(int i = 0 ; i < gamePanel.maxScreenCol ; i++){
-            mapTileNum[mapNumber][gamePanel.maxScreenRow][i] = 0;
-        }                
+              
     }
     public void draw(Graphics2D g2,int mapNum){
         int col = 0;
@@ -87,7 +85,7 @@ public class TileManager {
     }
     public int getMapTileNum(int mapNum, int row, int col){
 //        System.out.println("mapnum " + mapNum + " row " + row + " col " + col);
-        if(row < 0) return 0;
+        if(row < 0 || row > gamePanel.maxScreenRow -1) return 0;
         if(col < 0 || col >= gamePanel.maxScreenCol ) return 1;
         return mapTileNum[mapNum][row][col];
     }

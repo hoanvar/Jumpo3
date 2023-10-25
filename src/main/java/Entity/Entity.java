@@ -10,7 +10,6 @@ abstract class Entity {
     
     protected int  mapX, mapY;
     protected int entityWalkSpeed;
-    protected int walkcount;
     protected BufferedImage left[]; 
     protected BufferedImage right[];
     protected String direction;
@@ -22,6 +21,6 @@ abstract class Entity {
     protected boolean collisionOn = false;
     
     protected abstract void getImage(String path);
-    public abstract void update();
-    public abstract void draw(Graphics g2);
+    protected abstract void update();
+    protected abstract void draw(Graphics g2);
 }

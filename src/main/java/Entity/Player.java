@@ -27,7 +27,6 @@ public class Player extends Entity {
     private boolean isWalking;
     private boolean hitTop;
     private boolean hitSide;
-    private boolean updated;
     
     public Player (GamePanel gamePanel, KeyBoardInPut keyBoardInPut){
         this.gamePanel = gamePanel;
@@ -47,7 +46,6 @@ public class Player extends Entity {
        energy = 0;
        fallDistance = 0;
        entityWalkSpeed = 3;
-       walkcount = 0;
        xSpeed = 3;
        ySpeed = 5;
        isJumping = false;
@@ -55,7 +53,6 @@ public class Player extends Entity {
        isWalking = false;
        hitTop = false;
        hitSide = false;
-       updated = false;
    }
     @Override
     protected void getImage(String path){
@@ -101,7 +98,6 @@ public class Player extends Entity {
    }
     @Override
    public void update(){
-       updated = false;
       
        if(isGrounded()){
            handleKBInput();
@@ -115,7 +111,6 @@ public class Player extends Entity {
             hitTop = false;
             collisionOn = gamePanel.collisionChecker.checkTile(this,"jump"); 
             if(!collisionOn){
-                updated = true;
                 switch(direction){
                     case "left":
                         mapX -= xSpeed;
@@ -215,18 +210,18 @@ public class Player extends Entity {
    }
     @Override
    public void draw(Graphics g2){
-       BufferedImage image = null;
+       BufferedImage image;
            if(isFalling){
                image = getFallImage(direction);
            }else if(isJumping){
                image = getJumpImage(direction);
            }else if (isWalking){
-               image = getWalkImage(direction, spriteNum);
+               image = getWalkImage(direction,spriteNum);
            }else{
                if(keyBoardInPut.isSpacePressed() == true){
                    image = spaceHold;
                }else{
-                   if(fallDistance > 60)    image = longDistanceFall1;
+                   if(fallDistance > 60)    image = getLongDistanceFallImage();
                    else
                         image = getWalkImage(direction, 0);
                }
@@ -235,6 +230,10 @@ public class Player extends Entity {
          
        g2.drawImage(image, mapX, mapY,  null);
       
+   }
+   private BufferedImage getLongDistanceFallImage(){
+       if("left".equals(direction))  return longDistanceFall2;
+       else return longDistanceFall1;
    }
    private BufferedImage getWalkImage(String direction, int count){
        if("left".equals(direction)){
@@ -321,9 +320,6 @@ public class Player extends Entity {
    public int getXSpeed(){
        return xSpeed;
    }
-//   public void setPlayerCollision(boolean bool){
-//       collisionOn = bool;
-//   }
    public int getYSpeed(){
        return ySpeed;
    }
