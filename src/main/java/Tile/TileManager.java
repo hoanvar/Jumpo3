@@ -65,8 +65,8 @@ public class TileManager {
                 row++;
             }
         }
-        for(int i = 0 ; i < 48 ; i++){
-            mapTileNum[mapNumber][24][i] = 0;
+        for(int i = 0 ; i < gamePanel.maxScreenCol ; i++){
+            mapTileNum[mapNumber][gamePanel.maxScreenRow][i] = 0;
         }                
     }
     public void draw(Graphics2D g2,int mapNum){
@@ -88,7 +88,7 @@ public class TileManager {
     public int getMapTileNum(int mapNum, int row, int col){
 //        System.out.println("mapnum " + mapNum + " row " + row + " col " + col);
         if(row < 0) return 0;
-        if(col < 0 || col >= 48 ) return 1;
+        if(col < 0 || col >= gamePanel.maxScreenCol ) return 1;
         return mapTileNum[mapNum][row][col];
     }
     public boolean getTileCollision(int number){

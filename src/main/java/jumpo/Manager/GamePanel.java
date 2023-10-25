@@ -30,7 +30,7 @@ public class GamePanel extends JPanel implements Runnable{
     
     KeyBoardInPut keyBoardInPut = new KeyBoardInPut();
     public Player player = new Player(this,keyBoardInPut);
-    BackGround backGround = new BackGround();
+    BackGround backGround = new BackGround(this);
     public TileManager tileManager = new TileManager(this);
     public CollisionCheck collisionChecker = new CollisionCheck(this);
     public int mapNum ;

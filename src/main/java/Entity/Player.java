@@ -321,9 +321,9 @@ public class Player extends Entity {
    public int getXSpeed(){
        return xSpeed;
    }
-   public void setPlayerCollision(boolean bool){
-       collisionOn = bool;
-   }
+//   public void setPlayerCollision(boolean bool){
+//       collisionOn = bool;
+//   }
    public int getYSpeed(){
        return ySpeed;
    }
