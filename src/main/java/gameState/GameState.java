@@ -20,10 +20,10 @@ public class GameState {
         this.keyBoardInput =  keyBoardInput;
     }
     public void pauseState(){
-        if(keyBoardInput.isPPressed()){
+        if(keyBoardInput.isPCode()){
             gameStateNum = 1;
         }
-        if(keyBoardInput.isPPressed() == false){
+        if(keyBoardInput.isPCode() == false){
             gameStateNum = 0;
         }
     }
