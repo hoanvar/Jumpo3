@@ -12,7 +12,6 @@ import jumpo.Manager.GamePanel;
 public class OldMan extends Entity{
     private int initMap;
     private int routineCount;
-    private BufferedImage stand1,stand2;
     private OldManDialog oldManDialog;
     public OldMan(GamePanel gamePanel,int initMap){
         super(gamePanel);
@@ -95,10 +94,10 @@ public class OldMan extends Entity{
    }
     private class OldManDialog{
         public String dialog[];
-        private Font font ;
-        private int triangleSize;
-        private int rectWidth;
-        private int rectHeight;
+        private final Font font = new Font("Arial", Font.PLAIN, 14);;
+        private final int triangleSize = 10;
+        private final int rectWidth = 255;
+        private final int rectHeight = 50;
         // Split dialog text
         private String dialogText,dialogTextSub;
         private int dialogCheck;
@@ -109,18 +108,14 @@ public class OldMan extends Entity{
         private int currentDialog;
         private int counter;
         private OldManDialog(){
-            triangleSize = 10;
-            rectWidth = 255;
             dialogText = "";
             dialogTextSub = "";
             dialogCheck = 0;
             shutDialog = 0;
             shutDialogCounter = 0;
-            rectHeight = 50;
             currentIndex = 0;
             currentDialog = 0;
             counter = 0;
-            font = new Font("Arial", Font.PLAIN, 14);
             dialog = new String[3];
             dialog[0] = "Ho Ho Ho, ta nghe nói trên đỉnh nơi/này có một kho báu rất lớn";
             dialog[1] = "Nó thuộc về một sơn tặc huyền thoại/ông có tên là Silver P Kato";
@@ -128,7 +123,7 @@ public class OldMan extends Entity{
         }
         private void draw(Graphics g2){
             if(shutDialog == 1){
-                int rectX = mapX - rectWidth / 2 + 60;  // Đặt hộp chữ nhật trên đầu nhân vật
+                int rectX = mapX - rectWidth / 2 + 60;  
                 int rectY = mapY - rectHeight - 10;
 
                 // Rectagle

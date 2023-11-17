@@ -14,10 +14,10 @@ public class GameState {
     private int gameStateNum;
     private KeyBoardInput keyBoardInput;
     
-    public GameState(GamePanel gamePanel, KeyBoardInput keyBoardInput){
+    public GameState(GamePanel gamePanel){
         this.gamePanel = gamePanel;
         gameStateNum = 0;
-        this.keyBoardInput =  keyBoardInput;
+        this.keyBoardInput =  gamePanel.keyBoardInput;
     }
     public void pauseState(){
         if(keyBoardInput.isPCode()){

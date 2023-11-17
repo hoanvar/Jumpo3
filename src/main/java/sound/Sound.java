@@ -18,6 +18,8 @@ public class Sound {
         soundURL[2] = getClass().getResource("/playerSE/land.wav"); 
         soundURL[3] = getClass().getResource("/playerSE/splat.wav");
         soundURL[4] = getClass().getResource("/playerSE/sad theme.wav");
+        
+        soundURL[5] = getClass().getResource("/BirdSE/bird.wav");
     }
     public void playSE(int i){
         if(keyBoardInput.isMCode() == true){

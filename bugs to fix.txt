@@ -1,0 +1,2 @@
+//1:chuyển map nếu gặp gạch ở map trên thì bị bug dính vào gạch.
+//hướng tạm thời, check điều kiện ô trước, sau đó nếu có gạch thì sethittop
