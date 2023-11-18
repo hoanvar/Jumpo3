@@ -10,7 +10,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import jumpo.Manager.GamePanel;
 public class OldMan extends Entity{
-    private int initMap;
     private int routineCount;
     private OldManDialog oldManDialog;
     public OldMan(GamePanel gamePanel,int initMap){
