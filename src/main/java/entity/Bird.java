@@ -6,6 +6,7 @@ package Entity;
 
 import Tool.Tool;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -63,6 +64,7 @@ public class Bird extends Entity {
         flyRight = new BufferedImage[9];
         getImage("/BirdImage/");
     }
+    @Override
     protected void getImage(String path){
         try{
             // Left right
@@ -180,7 +182,7 @@ public class Bird extends Entity {
         direction = playerDirection;
     }
     @Override
-    public void draw(Graphics g2){
+    public void draw(Graphics2D g2){
         BufferedImage image ;
         if(!discard){
             if(!triggerOn){

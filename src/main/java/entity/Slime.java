@@ -6,6 +6,7 @@ package Entity;
 
 import Tool.Tool;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -32,7 +33,7 @@ public class Slime extends Entity{
         seActivated = false;
         routineCount=0;
 
-        solidArea = new Rectangle(12, 28, 32, 14);
+        solidArea = new Rectangle(12, 28, 14, 14);
         solidAreaDefaultX = 12;
         solidAreaDefaultY = 28;
 
@@ -94,7 +95,7 @@ public class Slime extends Entity{
         }
     }
     @Override
-    public void draw(Graphics g2){
+    public void draw(Graphics2D g2){
         BufferedImage image;
         if(!triggerOn){
             image = left[spriteNum];
@@ -107,12 +108,12 @@ public class Slime extends Entity{
     protected void getImage(String path){
         try{
             for(int i=0 ; i<=7 ; i++){
-                left[i] = ImageIO.read(getClass().getResourceAsStream(path + i+".png"));
+                left[i] = ImageIO.read(getClass().getResourceAsStream(path + i +".png"));
                 left[i] = Tool.scaleImage(left[i], gamePanel.playerSize , gamePanel.playerSize );
             }
             
             for(int i=0 ; i<=6 ; i++){
-                right[i] = ImageIO.read(getClass().getResourceAsStream(path + i+"_jumped.png"));
+                right[i] = ImageIO.read(getClass().getResourceAsStream(path + i +"_jumped.png"));
                 right[i] = Tool.scaleImage(right[i], gamePanel.playerSize , gamePanel.playerSize );
             }
             

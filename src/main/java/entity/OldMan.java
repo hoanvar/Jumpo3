@@ -15,7 +15,7 @@ public class OldMan extends Entity{
     public OldMan(GamePanel gamePanel,int initMap){
         super(gamePanel);
         oldManDialog = new OldManDialog();
-        mapX = 5 * gamePanel.tileSize;
+        mapX = 3 * gamePanel.tileSize;
         mapY = 22 * gamePanel.tileSize - 6;
         entityWalkSpeed = 1;
         direction = "right";
@@ -61,7 +61,7 @@ public class OldMan extends Entity{
         
     }
     @Override
-    public void draw(Graphics g2){
+    public void draw(Graphics2D g2){
         BufferedImage image = null;
             switch (direction){
                 case "right":

@@ -31,7 +31,7 @@ public class GameState {
         return gameStateNum;
     }
     // tam thoi viet ham ve pause state o day
-    public void draw(Graphics g2){
+    public void draw(Graphics2D g2){
         int frameWidth = gamePanel.screenWidth;
         int frameHeight = gamePanel.screenHeight;
         FontMetrics fontMetrics = g2.getFontMetrics();
