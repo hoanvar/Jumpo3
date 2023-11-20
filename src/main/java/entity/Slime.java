@@ -13,29 +13,24 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import jumpo.Manager.GamePanel;
 
-/**
- *
- * @author FPT-SHOP
- */
+
 public class Slime extends Entity{
-    private boolean triggerOn;
-    private boolean seActivated;
     private int routineCount;
     public Slime(GamePanel gamePanel,int initMap,int mapRow,int mapCol){
         super(gamePanel);
         this.sound = gamePanel.sound;
         this.initMap = initMap;
-        mapX = mapRow * gamePanel.tileSize;
-        mapY = mapCol * gamePanel.tileSize - 20;        
+        mapX = mapCol * gamePanel.tileSize;
+        mapY = mapRow * gamePanel.tileSize ;        
         
         this.initMap = initMap;
         triggerOn = false;
         seActivated = false;
         routineCount=0;
 
-        solidArea = new Rectangle(12, 28, 14, 14);
+        solidArea = new Rectangle(12, 34, 16, 14);
         solidAreaDefaultX = 12;
-        solidAreaDefaultY = 28;
+        solidAreaDefaultY = 34;
 
         spriteCounter=0;
         spriteNum = 0;
@@ -85,13 +80,12 @@ public class Slime extends Entity{
         }
     }
     public void trigger(){
-        triggerOn = true;
-        spriteCounter = 0;
-        spriteNum = 0;
-        // Slime SE
-        if(!seActivated){
-            sound.playSE(5);
-            seActivated = true;
+        if(!triggerOn){
+            triggerOn = true;
+            spriteCounter = 0;
+            spriteNum = 0;
+            // Slime SE
+            sound.playSE(6);
         }
     }
     @Override
@@ -102,7 +96,7 @@ public class Slime extends Entity{
         }else{
             image = right[spriteNum];
         }
-        g2.drawImage(image, mapX, mapY+2,  null);
+        g2.drawImage(image, mapX-6, mapY+12,  null);
     }
     @Override
     protected void getImage(String path){
@@ -120,8 +114,5 @@ public class Slime extends Entity{
         }catch(IOException e){
             e.printStackTrace();
         }
-    }
-    public int getInitMap(){
-        return initMap;
     }
 }

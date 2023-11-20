@@ -19,7 +19,11 @@ public class Sound {
         soundURL[3] = getClass().getResource("/playerSE/splat.wav");
         soundURL[4] = getClass().getResource("/playerSE/sad theme.wav");
         
-        soundURL[5] = getClass().getResource("/BirdSE/bird.wav");
+        soundURL[5] = getClass().getResource("/OthersSE/bird.wav");
+        soundURL[6] = getClass().getResource("/OthersSE/slime.wav");
+        soundURL[7] = getClass().getResource("/OthersSE/chest2.wav");
+        soundURL[8] = getClass().getResource("/OthersSE/winning.wav");
+
     }
     public void playSE(int i){
         if(keyBoardInput.isMCode() == true){

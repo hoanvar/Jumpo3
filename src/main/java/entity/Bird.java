@@ -19,7 +19,6 @@ public class Bird extends Entity {
     private int spriteCounterSub;
     private int spriteCounterSubNum;
     private int rev;
-    private boolean triggerOn,seActivated;
     private boolean discard;
     private int type;
     private BufferedImage flyLeft[];
@@ -28,8 +27,8 @@ public class Bird extends Entity {
         super(gamePanel);
         this.sound = gamePanel.sound;
         this.initMap = initMap;
-        mapX = mapRow * gamePanel.tileSize;
-        mapY = mapCol * gamePanel.tileSize - 20;
+        mapX = mapCol * gamePanel.tileSize;
+        mapY = mapRow * gamePanel.tileSize;
         entityWalkSpeed = 5;
         
         // Generate random number
@@ -129,7 +128,7 @@ public class Bird extends Entity {
                 }
                 spriteCounter++;
                 if(spriteCounter > 10 ){
-                    if(spriteNum <= 7){
+                    if(spriteNum < 7){
                         spriteNum ++;
                     }else{
                         spriteNum = 0;
@@ -201,7 +200,5 @@ public class Bird extends Entity {
             g2.drawImage(image, mapX, mapY,  null);
         }
     }
-    public int getInitMap(){
-        return initMap;
-    }
+    
 }
