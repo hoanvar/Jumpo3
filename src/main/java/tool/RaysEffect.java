@@ -16,7 +16,7 @@ import jumpo.Manager.GamePanel;
 
 public class RaysEffect {
     private GamePanel gamePanel;
-    private int count;
+    private int count,count2;
     private int mapX, mapY;
     private boolean triggerOn ,seAc;
     private static final int NUM_RAYS = 3000;
@@ -32,6 +32,7 @@ public class RaysEffect {
         this.mapX = mapX + 25;
         this.mapY = mapY - 13;
         count = 0;
+        count2 = 0;
         seAc = false;
     }
     public void update(){
@@ -44,6 +45,13 @@ public class RaysEffect {
                 }
                 if (rays.size() < NUM_RAYS) {
                     drawNextBatch();
+                }else{
+                    count2++;
+                    if(count2> 20){
+                        gamePanel.ui.record.update();
+                        gamePanel.gameState = gamePanel.endState;
+                        gamePanel.sound.playMusic();
+                    }
                 }
                     
             }else count++;
@@ -73,10 +81,7 @@ public class RaysEffect {
     Random random = new Random();
     int angle = random.nextInt(360);
     double radian = Math.toRadians(angle);
-
-    // Kích thước lưng hình tròn trống (ví dụ: 20 pixel)
     
-    // Tính toán tọa độ kết thúc của tia, đi qua lưng hình tròn trống
     int xEnd = (int) (mapX + ( maxWidth) * Math.cos(radian));
     int yEnd = (int) (mapY + ( maxWidth) * Math.sin(radian));
 
@@ -88,16 +93,16 @@ public class RaysEffect {
 }
     public void draw(Graphics2D g2) {
         if(triggerOn){
-        // Vẽ các tia đã được lưu trữ trong danh sách
-        for (Ray ray : rays) {
-            g2.setColor(Color.WHITE);
-            g2.setStroke(new BasicStroke(ray.getWidth()));
-            g2.draw(ray.getLine());
-        }
+        // Vẽ các tia 
+            for (Ray ray : rays) {
+                g2.setColor(Color.WHITE);
+                g2.setStroke(new BasicStroke(ray.getWidth()));
+                g2.draw(ray.getLine());
+            }
         }
     }
 
-    // Lớp để lưu trữ thông tin về tia bao gồm độ rộng
+    // Lớp để lưu trữ thông tin về tia 
     private static class Ray {
         private Line2D line;
         private float width;
